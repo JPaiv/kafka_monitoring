@@ -14,7 +14,7 @@ def producer(message):
     )
 
     print("Sending: {}".format(message))
-    producer.send("kafka-monitoring", message.encode("utf-8"))
+    producer.send(os.environ["topic"], message.encode("utf-8"))
 
     producer.flush()
 
