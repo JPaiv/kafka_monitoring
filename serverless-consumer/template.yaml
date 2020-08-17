@@ -14,11 +14,11 @@ provider:
 
   environment:
     stage: ${paramEnvId}
-    contentTextBucket: ${contentTextBucket}
     certsKeysBucket: ${certsKeysBucket}
     groupId: ${groupIdA}
     clientId: ${clientId}
     servers: ${servers}
+    uri: ${uri}
 
     VAULT_BUCKET:
       StackRef:   
