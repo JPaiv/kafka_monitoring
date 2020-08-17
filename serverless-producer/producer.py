@@ -6,7 +6,7 @@ TEMP_DIR = tempfile.mkdtemp()
 
 def producer(message):
     producer = KafkaProducer(
-        bootstrap_servers="kafka-e997cda-paivarinta-ac3e.aivencloud.com:29903",
+        bootstrap_servers=os.environ["bootstrapServer"],
         security_protocol="SSL",
         ssl_cafile=_download_from_s3("ca.pem"),
         ssl_certfile=_download_from_s3("service.cert"),

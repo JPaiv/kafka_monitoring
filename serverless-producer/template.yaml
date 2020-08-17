@@ -16,6 +16,7 @@ provider:
     stage: ${paramEnvId}
     contentTextBucket: ${contentTextBucket}
     certsKeysBucket: ${certsKeysBucket}
+    bootstrapServer: ${bootstrapServer}
 
     VAULT_BUCKET:
       StackRef:   
