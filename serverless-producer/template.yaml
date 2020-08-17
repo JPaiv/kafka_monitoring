@@ -1,0 +1,84 @@
+  
+service: kafka-monitoring-producer
+plugins:
+  - serverless-python-requirements
+
+pythonRequirements:
+  dockerizePip: true
+
+provider:
+  name: aws
+  runtime: python3.8
+  region: eu-central-1
+  role: resBackendRole
+
+  environment:
+    stage: ${paramEnvId}
+    contentTextBucket: ${contentTextBucket}
+    certsKeysBucket: ${certsKeysBucket}
+
+    VAULT_BUCKET:
+      StackRef:   
+        region: {Ref: 'AWS::Region'}
+        stackName: vault
+        paramName: vaultBucketName
+    VAULT_KEY:
+      StackRef:
+        region: {Ref: 'AWS::Region'}
+        stackName: vault
+        paramName: kmsKeyArn
+
+functions:
+  handler.handler:
+    description: Get website metrics from a website and post them to to kafka topic. Includes kafka producer.
+    handler: handler.handler
+    events:
+        - schedule: rate(1 hour)
+
+resources:
+  Resources:
+    resBackendRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service:
+                  - "lambda.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+        ManagedPolicyArns:
+          - StackRef: {region: {Ref: 'AWS::Region'}, stackName: vault, paramName: decryptPolicy}
+          - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+          uploadUserProfilePiture:
+            Type: AWS::IAM::User
+            Properties:
+              Policies:
+                - PolicyName: allowS3
+                  PolicyDocument:
+                    Version: "2012-10-17"
+                    Statement:
+                      - Effect: "Allow"
+                        Action:
+                          - "s3:GetObject"
+                          - "s3:GetObjectTagging"
+                          - "s3:PutObjectTagging"
+                          - "s3:PutObject"
+                        Resource:
+                          - arn:aws:s3:::${contentTextBucket}/*
+                          - arn:aws:s3:::${certsKeysBucket}/*
+                - PolicyName: allowS3
+                  PolicyDocument:
+                    Version: "2012-10-17"
+                    Statement:
+                      - Effect: "Allow"
+                        Action:
+                          - "s3:GetObject"
+                          - "s3:GetObjectTagging"
+                          - "s3:PutObjectTagging"
+                          - "s3:PutObject"
+                        Resource:
+                          - arn:aws:s3:::${contentTextBucket}/*
+                          - arn:aws:s3:::${certsKeysBucket}/*
