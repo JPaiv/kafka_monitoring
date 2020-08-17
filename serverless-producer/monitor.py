@@ -44,5 +44,7 @@ def _save_content_text_to_s3(response_text):
         's3',
         region_name='eu-central-1'
     )
+    json_object = {"tex": response_text}
+    json_object = json.dumps(json.object)
     object_time = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M:%S")
-    s3.Object(BUCKETNAME, f'{object_time}.json').put(Body=response_text)
+    s3.Object(BUCKETNAME, f'{object_time}.json').put(Body=json_object)
