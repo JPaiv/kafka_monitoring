@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 from producer import producer
 from monitor import monitor
 
@@ -17,7 +18,7 @@ def handler():
     response = create_http_response(200, "Success!")
 
     return response
-    
+
 
 def create_http_response(statuscode, body):
 
