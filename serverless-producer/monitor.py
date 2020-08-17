@@ -9,7 +9,7 @@ from datetime import datetime
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-#BUCKETNAME = os.environ["bucketName"]
+BUCKETNAME = os.environ["contentTextBucket"]
 
 
 def monitor():
@@ -29,7 +29,7 @@ def monitor():
     response_parsed_data["response_time"] = response_time
     response_parsed_data["response_text"] = response.text
     response_text = response_parsed_data["response_text"]
-    #_save_content_text_to_s3(response_text)
+    _save_content_text_to_s3(response_text)
     del response_parsed_data["response_text"]
     response_parsed_data = json.dumps(response_parsed_data)
 

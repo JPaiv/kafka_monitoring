@@ -7,7 +7,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
-def main():
+def handler():
     """
         Monitor a website and upload analytics to a database.
     """
@@ -27,7 +27,3 @@ def create_http_response(statuscode, body):
     }
 
     return response
-
-
-if __name__ == "__main__":
-    main()
